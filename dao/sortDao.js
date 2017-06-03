@@ -62,14 +62,12 @@ module.exports = {
                         for (var i = 0; i < list.length; i++) {
                             $redis.hmset('sortState', list[i], function(err, res) {
                                 console.log("============hmset: 60" + res);
-                                //$redis.quit();
                             });
                         }
                         connection.release();
                         $util.jsonWrite(response, json);
                     });
                 }
-                //$redis.quit();
             });
         });
     },

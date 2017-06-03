@@ -57,10 +57,18 @@ module.exports = {
             else
                 req.query.tag = 'postdate';
             console.log(req.query.tag + " fullflag:" + req.query.fullflag);
-            var param = ['', req.query.tag, parseInt(req.query.start), parseInt(req.query.pageSize)];
+            var param = ['', req.query.tag, parseInt(req.query.start), parseInt(req.query.pageSize)]; // and a.sortid=' + req.query.sortId + '
             var sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
             if (req.query.fullflag) {
-                sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId and fullflag=' + req.query.fullflag + ' order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
+                if (req.query.sortId)
+                    sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId and a.sortid=' + req.query.sortId + ' and fullflag=' + req.query.fullflag + ' order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
+                else
+                    sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId and fullflag=' + req.query.fullflag + ' order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
+            } else {
+                if (req.query.sortId)
+                    sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId and a.sortid=' + req.query.sortId + ' order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
+                else
+                    sql = 'select a.*,s.shortname from jieqi_article_article a,jieqi_article_sort s where a.sortId=s.sortId order by ' + req.query.tag + ' DESC limit ' + req.query.start + ',' + req.query.pageSize;
             }
             //'select * from jieqi_article_article ? order by ? DESC limit ?,?'
             //connection.query($sql.queryBang, param, function(err, result) {
